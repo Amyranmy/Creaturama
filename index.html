@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔮 EL GRIMORIO DIARIO 🔮 - El Portal de la Red Arcana</title>
+    <!-- Tailwind CSS para diseño base responsivo -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tone.js para efectos de sonido retro de 8 bits -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    <!-- Google Fonts: VT323 para estética pixel, Times para periódico antiguo -->
+    <link href="https://fonts.googleapis.com/css2?family=VT323&family=Times+New+Roman&family=Courier+Prime&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            background-color: #1a0933;
+            background-image: radial-gradient(#2b1055 20%, transparent 20%), radial-gradient(#2b1055 20%, transparent 20%);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+            color: #00ffcc;
+            font-family: 'Times New Roman', Times, serif;
+            cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2300ffcc' stroke-width='2'%3E%3Cpath d='M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z'/%3E%3C/svg%3E"), auto;
+        }
+
+        .pixel-font {
+            font-family: 'VT323', monospace;
+        }
+
+        .forum-font {
+            font-family: 'Courier Prime', monospace;
+        }
+
+        /* Estilo Web 1.0 Retro Borders */
+        .retro-window {
+            border: 4px outset #4a1d96;
+            background-color: #240b45;
+            box-shadow: 5px 5px 0px #0d041a;
+        }
+
+        .retro-header-bar {
+            background: linear-gradient(90deg, #8b5cf6, #3b0764);
+            text-shadow: 1px 1px 0px #000;
+        }
+
+        .retro-button {
+            border: 3px outset #8b5cf6;
+            background-color: #4c1d95;
+            transition: all 0.1s ease;
+        }
+
+        .retro-button:active {
+            border-style: inset;
+            background-color: #3b0764;
+        }
+
+        /* Efectos parpadeantes y animaciones retro */
+        @keyframes blink {
+            0%, 49% { opacity: 1; }
+            50%, 100% { opacity: 0; }
+        }
+
+        .blink-text {
+            animation: blink 1.2s infinite;
+        }
+
+        @keyframes rainbow {
+            0% { border-color: #ff00ff; box-shadow: 0 0 10px #ff00ff; }
+            33% { border-color: #00ffff; box-shadow: 0 0 10px #00ffff; }
+            66% { border-color: #ffff00; box-shadow: 0 0 10px #ffff00; }
+            100% { border-color: #ff00ff; box-shadow: 0 0 10px #ff00ff; }
+        }
+
+        .rainbow-glow {
+            animation: rainbow 3s infinite linear;
+        }
+
+        /* Destellos mágicos del cursor */
+        .sparkle {
+            position: absolute;
+            pointer-events: none;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #ff00ff;
+            box-shadow: 0 0 8px #ff00ff, 0 0 12px #00ffcc;
+            transform: translate(-50%, -50%);
+            animation: sparkle-fade 0.8s linear forwards;
+        }
+
+        @keyframes sparkle-fade {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+        }
+
+        /* Scrollbar Retro */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1a0933;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #6d28d9;
+            border: 2px outset #8b5cf6;
+        }
+    </style>
+</head>
+<body class="p-2 md:p-6 min-h-screen relative overflow-x-hidden">
+
+    <!-- Sparkles container -->
+    <div id="sparkle-container" class="fixed inset-0 pointer-events-none z-50"></div>
+
+    <!-- CABECERA PORTAL -->
+    <header class="max-w-7xl mx-auto mb-6 retro-window">
+        <div class="retro-header-bar p-1 px-3 flex justify-between items-center text-xs text-purple-200 pixel-font">
+            <span>💻 RED_ARCANA_v3.01_PROD</span>
+            <span class="blink-text text-yellow-400">🚨 ÚLTIMO MINUTO: ¡La huelga de duendes del oro vacía las bóvedas de Gringotts! 🚨</span>
+            <span>Estrellas: Alineadas ⭐</span>
+        </div>
+        
+        <div class="p-6 text-center bg-[#150529] border-b-4 border-[#4a1d96] relative overflow-hidden">
+            <div class="absolute left-4 top-4 text-3xl animate-bounce">🔮</div>
+            <div class="absolute right-4 top-4 text-3xl animate-bounce" style="animation-delay: 0.5s;">📜</div>
+            
+            <h1 class="text-4xl md:text-6xl font-bold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-yellow-400 to-cyan-400 pixel-font drop-shadow-md">
+                EL GRIMORIO DIARIO
+            </h1>
+            <p class="text-sm md:text-lg text-emerald-400 font-mono mt-2 italic">
+                "La verdad no humana, sin filtros de carne ni pulgares oponibles" — Fundado en el Año 412 de la Era del Fénix
+            </p>
+            
+            <div class="mt-4 flex flex-wrap justify-center gap-4 text-xs font-mono text-gray-300 border-t border-purple-900 pt-3">
+                <span>📅 Hoy es: <span id="fantasy-date">Día del Sapo, Mes del Trueno</span></span>
+                <span>•</span>
+                <span>🔥 Lectores Arcanos: <span id="visitor-counter" class="text-yellow-400 bg-black px-2 py-0.5 rounded border border-yellow-500">00854219</span></span>
+                <span>•</span>
+                <span>🔮 Clima: Neblina densa con posibilidad de lluvia de runas</span>
+            </div>
+        </div>
+
+        <!-- MARQUESINA DE ÚLTIMAS NOTICIAS (Marquee clásico de los 2000s) -->
+        <div class="bg-black py-1 border-t-2 border-[#4a1d96] text-yellow-300 font-mono text-xs flex overflow-hidden">
+            <marquee behavior="scroll" direction="left" scrollamount="5">
+                🔥 [DESAPARICIÓN] Crecen sospechas en el caso de la ninfa Lysandra: ¿Secuestro del Ministerio o abducción interdimensional? -- 🐉 [ALQUIMIA] Hermanos Drendill bajo investigación por el estallido en su fiesta vip -- 📘 [EDUCACIÓN] El Ministerio lanza la Campaña de Lectura Obligatoria para desmentir "teorías de la conspiración de monos lampiños" -- 🎸 [MÚSICA] Brutaluv revienta la lista de éxitos con 'Garras de Fresa' -- 🪄 [CRISIS] Las pociones de amor falsas inundan el mercado negro.
+            </marquee>
+        </div>
+    </header>
+
+    <!-- CONTENIDO PRINCIPAL EN REJILLA -->
+    <main class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 pb-20">
+        
+        <!-- COLUMNA IZQUIERDA: Widgets, Música y PUBLICIDAD 2 (Permanente - Enciclopedia) (3 Columnas) -->
+        <aside class="lg:col-span-3 space-y-6">
+            
+            <!-- PUBLICIDAD 2: ENLACE PERMANENTE ANTI-CONSPIRACIONES -->
+            <section class="retro-window p-3 border-red-500 border-4">
+                <div class="bg-red-950 text-white p-1 text-[11px] font-bold text-center mb-2 pixel-font tracking-wider">
+                    📢 COMUNICADO DEL MINISTERIO DE EDUCACIÓN
+                </div>
+                <div class="bg-black p-3 rounded border border-red-800 text-center text-xs font-mono">
+                    <p class="text-red-400 font-bold text-sm mb-2">🔴 ¡Basta de Desinformación!</p>
+                    <div class="text-[2.5rem] my-2">📚🛡️</div>
+                    <p class="text-gray-300 text-[11px] leading-tight mb-3">
+                        ¿Hastiado de que los jóvenes crean en leyendas urbanas como los "humanos calvos"? Enséñales con fuentes oficiales.
+                    </p>
+                    
+                    <div class="bg-[#1a0c0c] p-2 rounded border border-red-900 mb-3 text-left">
+                        <span class="text-yellow-400 font-bold text-[10px] block">TOMO OFICIAL RECOMENDADO:</span>
+                        <span class="text-white text-[11px] italic">"Anales de la Ciencia Arcana: Por qué la materia de carne sin magia es biológicamente imposible"</span>
+                        <span class="text-gray-500 text-[9px] block mt-1">Escrito por: Archidruida Aurelius</span>
+                    </div>
+
+                    <button onclick="showSystemMsg('📚 Has adquirido la Guía Oficial de Desmentido del Ministerio de Educación. Tu mente ha sido certificada contra delirios conspirativos.')" 
+                            class="w-full retro-button py-2 text-xs text-yellow-300 font-bold bg-red-900 border-red-500 hover:bg-red-800">
+                        📖 COMPRAR GUÍA (1 Moneda de Plata)
+                    </button>
+                    <span class="text-[9px] text-gray-500 block mt-2">Patrocinado por el Comité para la Preservación de la Verdad Rúnica.</span>
+                </div>
+            </section>
+
+            <!-- REPRODUCTOR WINMAGIC MP3 -->
+            <section class="retro-window p-3">
+                <div class="retro-header-bar p-1 px-2 text-xs font-bold text-white flex justify-between items-center pixel-font">
+                    <span>🎧 WINMAGIC MP3 PLAYER</span>
+                    <span class="text-pink-400">v1.92</span>
+                </div>
+                <div class="bg-black p-3 mt-2 rounded border border-purple-800 text-center font-mono">
+                    <div class="text-cyan-400 text-sm truncate" id="song-title">Cargando orbe sonoro...</div>
+                    <div class="text-xs text-gray-500 mt-1" id="track-status">Estado: Detenido</div>
+                    
+                    <!-- Simulación de ecualizador visual retro -->
+                    <div class="flex justify-center gap-1 my-3 h-8 items-end overflow-hidden px-4">
+                        <div class="eq-bar w-2 bg-purple-500 transition-all duration-150" style="height: 10%;"></div>
+                        <div class="eq-bar w-2 bg-pink-500 transition-all duration-150" style="height: 30%;"></div>
+                        <div class="eq-bar w-2 bg-yellow-500 transition-all duration-150" style="height: 60%;"></div>
+                        <div class="eq-bar w-2 bg-cyan-500 transition-all duration-150" style="height: 40%;"></div>
+                        <div class="eq-bar w-2 bg-emerald-500 transition-all duration-150" style="height: 80%;"></div>
+                        <div class="eq-bar w-2 bg-purple-500 transition-all duration-150" style="height: 20%;"></div>
+                        <div class="eq-bar w-2 bg-pink-500 transition-all duration-150" style="height: 50%;"></div>
+                    </div>
+
+                    <!-- Controles de Audio Retro -->
+                    <div class="flex flex-col gap-1.5 justify-center text-xs">
+                        <div class="flex justify-center gap-2">
+                            <button onclick="playMusic('retro-synth')" class="retro-button px-3 py-1 text-white font-bold">▶ PLAY</button>
+                            <button onclick="stopMusic()" class="retro-button px-3 py-1 text-white font-bold">■ STOP</button>
+                        </div>
+                    </div>
+                    <p class="text-[9px] text-gray-400 mt-2">⚠️ Haz clic en el pergamino para iniciar el éter sonoro.</p>
+                </div>
+            </section>
+
+            <!-- ENCUESTA DEL DÍA -->
+            <section class="retro-window p-3">
+                <div class="retro-header-bar p-1 px-2 text-xs font-bold text-white pixel-font">
+                    <span>🗳️ ENCUESTA SENSACIONALISTA</span>
+                </div>
+                <div class="bg-[#240b45] p-3 text-sm font-mono space-y-3">
+                    <p class="text-yellow-300 font-bold">¿Crees que el Ministerio de Educación nos oculta portales a otras realidades?</p>
+                    
+                    <form id="poll-form" onsubmit="submitPoll(event)" class="space-y-2 text-xs">
+                        <label class="flex items-center gap-2 cursor-pointer hover:text-white">
+                            <input type="radio" name="poll-opt" value="1" required class="accent-purple-500">
+                            <span>Sí, mi primo Golem vio un portal detrás del sótano.</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer hover:text-white">
+                            <input type="radio" name="poll-opt" value="2" class="accent-purple-500">
+                            <span>No, el Ministerio cuida de nuestras mentes puras.</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer hover:text-white">
+                            <input type="radio" name="poll-opt" value="3" class="accent-purple-500">
+                            <span>¡Los gnomos de jardín controlan las palancas!</span>
+                        </label>
+                        <button type="submit" class="retro-button w-full py-1 text-xs text-white font-bold mt-2">VOTAR AHORA</button>
+                    </form>
+
+                    <!-- Resultados ocultos hasta votar -->
+                    <div id="poll-results" class="hidden space-y-2 pt-2 border-t border-purple-900 text-xs text-gray-300">
+                        <p class="font-bold text-cyan-400">Resultados registrados:</p>
+                        <div>
+                            <div class="flex justify-between"><span>Sí (La verdad ahí fuera):</span> <span id="v-opt1">67%</span></div>
+                            <div class="w-full bg-black h-2 rounded overflow-hidden"><div id="b-opt1" class="bg-cyan-500 h-full" style="width: 67%"></div></div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between"><span>No (Súbditos leales):</span> <span id="v-opt2">12%</span></div>
+                            <div class="w-full bg-black h-2 rounded overflow-hidden"><div id="b-opt2" class="bg-pink-500 h-full" style="width: 12%"></div></div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between"><span>Gnomos controladores:</span> <span id="v-opt3">21%</span></div>
+                            <div class="w-full bg-black h-2 rounded overflow-hidden"><div id="b-opt3" class="bg-yellow-500 h-full" style="width: 21%"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </aside>
+
+        <!-- COLUMNA CENTRAL: LAS 4 NOTICIAS PRINCIPALES (6 Columnas) -->
+        <section class="lg:col-span-6 space-y-6">
+
+            <!-- NOTICIA 1: CASO ABIERTO DESAPARICIÓN + COMENTARIOS CONSPIRANOICOS -->
+            <article class="retro-window overflow-hidden border-cyan-400 border-2">
+                <div class="retro-header-bar p-2 flex justify-between items-center">
+                    <span class="pixel-font text-white text-sm font-bold tracking-widest">🚔 ARCHIVOS POLICIALES DE GAIA 🚔</span>
+                    <span class="text-xs text-yellow-300 font-mono font-bold">[CASO_ABIERTO_704]</span>
+                </div>
+                <div class="p-4 md:p-6 bg-[#211140] border-b-2 border-purple-900">
+                    <span class="text-xs text-yellow-300 font-bold uppercase tracking-wider block mb-1">🔍 MISTERIO SIN RESOLVER</span>
+                    <h2 class="text-2xl font-serif text-cyan-300 hover:underline cursor-pointer" onclick="openArticle('missing-case')">
+                        ¿Dónde está Lysandra VientoPlata? Desaparece una ninfa del agua en el Lago Cristalino y el Consejo guarda absoluto silencio.
+                    </h2>
+                    
+                    <p class="text-gray-300 text-sm mt-3 leading-relaxed">
+                        Lysandra, conocida protectora de las corrientes del norte, fue vista por última vez hace tres solsticios. Las únicas pistas que la Guardia Civil Élfica ha recuperado son sus sandalias de plata y un extraño charco de agua hirviendo. Las autoridades locales insisten en que "se marchó de vacaciones voluntariamente a los desiertos de sal", una excusa que ha desatado una ola de descontento popular y teorías descabelladas.
+                    </p>
+
+                    <div class="mt-4 p-3 bg-black rounded border border-cyan-800 text-xs font-mono">
+                        <div class="text-cyan-400 font-bold border-b border-cyan-900 pb-1 mb-2">💬 COMENTARIOS DE LA RED ARCANA (5 comentarios recientes):</div>
+                        
+                        <div class="space-y-3">
+                            <div class="border-b border-purple-950 pb-2">
+                                <span class="text-yellow-400 font-bold">🛸 Elfo_De_Roswell:</span>
+                                <p class="text-gray-300">"¡Vacaciones mis escamas! Lysandra descubrió que el agua de ese lago está siendo filtrada para alimentar los reactores de maná secretos del Consejo Superior. ¡La silenciaron o la teletransportaron a la Dimensión Vacía!"</p>
+                            </div>
+                            <div class="border-b border-purple-950 pb-2">
+                                <span class="text-pink-400 font-bold">🧛 Súcubo_Inquieta:</span>
+                                <p class="text-gray-300">"¿Nadie se da cuenta del charco de agua hirviendo? Ese es el residuo exacto que deja la invocación de un portal dimensional de baja calidad. Claramente la abdujo un coleccionista inter-espacial."</p>
+                            </div>
+                            <div class="border-b border-purple-950 pb-2">
+                                <span class="text-emerald-400 font-bold">🧚‍♂️ FairyGlow_00:</span>
+                                <p class="text-gray-300">"Es el Ministerio de Educación. Ella sabía que las enciclopedias oficiales están alteradas para ocultar las ruinas de las ciudades antiguas... ¡Ellos la tienen en las mazmorras de lodo!"</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 flex justify-between items-center text-xs text-gray-400 font-mono">
+                        <span>Escrito por: Reportero_Duende_Agudo</span>
+                        <button onclick="openComments('missing-case')" class="retro-button px-3 py-1 text-cyan-300 font-bold">💬 Leer todos los desvaríos (142)</button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- NOTICIA 2: ACCIDENTE DE LOS HERMANOS DUENDE DRENDILL -->
+            <article class="retro-window overflow-hidden border-red-500 border-2">
+                <div class="retro-header-bar p-2 flex justify-between items-center bg-red-950">
+                    <span class="pixel-font text-white text-sm font-bold tracking-widest">💥 ALERTA DE ÚLTIMO SEGUNDO 💥</span>
+                    <span class="text-xs text-yellow-300 font-mono font-bold animate-pulse">[SENSACIONALISTA]</span>
+                </div>
+                <div class="p-4 md:p-6 bg-[#3b0b2e] border-b-2 border-purple-900">
+                    <span class="text-xs text-pink-400 font-bold uppercase tracking-wider block mb-1">🍸 ESCÁNDALO EN LA ALTA SOCIEDAD MÁGICA</span>
+                    <h2 class="text-2xl font-serif text-yellow-300 hover:underline cursor-pointer" onclick="openArticle('drendill-accident')">
+                        ¡Catástrofe de espuma dorada! La mega-fiesta de los opulentos hermanos duende Drendill termina con una explosión de barriles de néctar maldito.
+                    </h2>
+                    
+                    <p class="text-gray-300 text-sm mt-3 leading-relaxed">
+                        Los multimillonarios hermanos duende, Barnaby y Barnaco Drendill, conocidos por su inmenso monopolio sobre los pozos de oro del Sur, han vuelto a escandalizar al Reino. Ayer por la noche, durante su exclusiva gala privada "Solsticio de Diamante", un barril experimental de cerveza de maná inestable sufrió un colapso térmico, cubriendo el palacio flotante entero de una espuma pegajosa que causa risa incontrolable y transforma temporalmente a los elfos en ranas.
+                    </p>
+
+                    <div class="mt-4 p-3 bg-black rounded border border-red-800 flex flex-col md:flex-row gap-4 items-center">
+                        <div class="text-4xl animate-bounce">🐸🍻</div>
+                        <div>
+                            <p class="text-xs text-yellow-400 font-mono italic">"¡Solo queríamos darles a nuestros invitados un buffet digno de reyes! El barril de cerveza mágica era de origen legítimo, lo compramos a un alquimista de confianza en un callejón oscuro."</p>
+                            <span class="text-[10px] text-gray-500 block mt-1">— Declaración conjunta de Barnaby y Barnaco Drendill, cubiertos de fango verde.</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 flex justify-between items-center text-xs text-gray-400 font-mono">
+                        <span>Escrito por: Cronista_De_Gala_Espectral</span>
+                        <button onclick="openComments('drendill-accident')" class="retro-button px-3 py-1 text-pink-300 font-bold">💬 Ver cotilleos (89)</button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- NOTICIA 3: ESTILO FORO - CÓMIC CONSPIRANOICO "LA VERDADERA HISTORIA" -->
+            <article class="retro-window overflow-hidden border-yellow-500 border-2">
+                <div class="retro-header-bar p-2 flex justify-between items-center">
+                    <span class="pixel-font text-white text-sm font-bold tracking-widest">💬 DISCUSIÓN DE FORO: CÓMICS Y TEORÍAS</span>
+                    <span class="text-xs text-yellow-300 font-mono font-bold">[ZONA_FREEWARE]</span>
+                </div>
+                <div class="p-4 md:p-6 bg-[#161d33] border-b-2 border-purple-900 forum-font">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="bg-yellow-500 text-black font-bold px-1 text-[10px] rounded">AUTOR</span>
+                        <span class="text-yellow-400 font-bold text-xs">Garlok_El_Desvelado_99</span>
+                        <span class="text-gray-500 text-[10px]">Publicado hace: 2 horas</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-white leading-snug">
+                        ¡EXCLUSIVA GEO-CITIES! Les presento la Saga "CRÓNICAS DEL FIN": El cómic digital prohibido que expone la mentira del origen golem.
+                    </h3>
+                    
+                    <p class="text-gray-300 text-xs mt-3 leading-relaxed">
+                        Amigos de la Red, ¡el Consejo de Magos ha intentado tirar mis hilos tres veces pero he vuelto! He terminado los primeros 3 tomos de mi saga autoeditada en cómic: <strong class="text-yellow-400">"CRÓNICAS DEL FIN: La Paradoja de la Carne Pensante"</strong>. 
+                        A través de dibujos pixelados, demuestro cómo los Golems no fueron esculpidos por duendes antiguos, sino que fueron colonizadores espaciales hechos de silicio refinado que pactaron con los dragones originales. 
+                    </p>
+
+                    <div class="mt-3 p-2 bg-[#0d1324] rounded border border-blue-900 text-[11px] text-cyan-400">
+                        📥 DESCARGA DIRECTA (No virus, garantizado contra maleficios):<br>
+                        <span class="text-white hover:underline cursor-pointer" onclick="showSystemMsg('📥 Descargando archivo: Cronicas_Del_Fin_v1_0.zip (72.4 MB). \n[SISTEMA]: Se requiere descompresor WinRar Mágico v3.0.')">💾 Cronicas_Del_Fin_SagaCompleta_HQ.zip (72.4 MB)</span><br>
+                        <span class="text-gray-500 text-[9px] block mt-1">Mirror 1: Portal_De_Espectros | Mirror 2: MegaArcano</span>
+                    </div>
+
+                    <div class="mt-4 pt-3 border-t border-blue-950 flex justify-between items-center text-[10px] text-gray-400">
+                        <span>Poder del Post: +412 Karma</span>
+                        <button onclick="openComments('comic-theory')" class="retro-button px-2 py-0.5 text-yellow-300 font-bold">💬 Responder al autor (64)</button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- NOTICIA 4: ESTILO FORO - HUMANOS Y LA MAGIA NEGRA -->
+            <article class="retro-window overflow-hidden border-pink-500 border-2">
+                <div class="retro-header-bar p-2 flex justify-between items-center">
+                    <span class="pixel-font text-white text-sm font-bold tracking-widest">💀 FORO: OCULTISMO Y LEYENDAS URBANAS</span>
+                    <span class="text-xs text-pink-400 font-mono font-bold">[SUB_NIVEL_6]</span>
+                </div>
+                <div class="p-4 md:p-6 bg-[#250d30] border-b-2 border-purple-900 forum-font">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="bg-pink-600 text-white font-bold px-1 text-[10px] rounded">USUARIO SEÑALADO</span>
+                        <span class="text-pink-400 font-bold text-xs">Mago_Oscuro_Sin_Filtro</span>
+                        <span class="text-gray-500 text-[10px]">Publicado hace: 1 día</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-white leading-snug">
+                        ¿Y si los "Humanos" no fueron fantasía? Las pruebas de la magia de carne muerta que el Ministerio de Magia ha ocultado en sus bóvedas subterráneas.
+                    </h3>
+                    
+                    <p class="text-gray-300 text-xs mt-3 leading-relaxed">
+                        Hablemos en serio. El currículum oficial de la enciclopedia oficial insiste en que los humanos son solo "fábulas asustadizas de duendes para que los niños duerman". Pero, ¿cómo explican las runas encontradas en las Ruinas de Silicio? 
+                        Los humanos eran seres biológicos lampiños que generaban <strong class="text-red-500">Magia Negra Inversa</strong> sin poseer núcleos de maná orgánico, utilizando el calor de su propia sangre. Eso asusta a los magos, porque significa que no dependían del éter celeste. ¡Tengo documentos robados del archivo ministerial!
+                    </p>
+
+                    <div class="mt-4 pt-3 border-t border-pink-900 flex justify-between items-center text-[10px] text-gray-400">
+                        <span>Advertencia: Hilo bajo estricto monitoreo del Consejo</span>
+                        <button onclick="openComments('human-theory')" class="retro-button px-2 py-0.5 text-pink-400 font-bold">💬 Responder al hilo (204)</button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- PAGINACIÓN SIMULADA RETRO (NO FUNCIONAL / CENSURADA) -->
+            <div class="retro-window p-4 bg-[#1a0830] border-[#4a1d96] border-2 text-center">
+                <p class="text-[11px] font-mono text-gray-400 mb-2">Mostrando publicaciones 1-4 de 98,420 conspiraciones catalogadas.</p>
+                <div class="flex flex-wrap justify-center items-center gap-1.5 font-mono text-xs">
+                    <span class="px-2 py-1 bg-purple-950 border border-purple-900 text-gray-600 cursor-not-allowed">[<< Primera]</span>
+                    <span class="px-2 py-1 bg-purple-950 border border-purple-900 text-gray-600 cursor-not-allowed">[< Anterior]</span>
+                    <span class="px-2.5 py-1 bg-[#8b5cf6] border-2 border-yellow-400 text-yellow-300 font-bold shadow-sm">1</span>
+                    <button onclick="showSystemMsg('⚠️ ERROR DE CONEXIÓN ARCANA:\nLa Página 2 ha sido incautada herméticamente por orden del Ministerio de Educación.\n\nMotivo: Prevención de brotes psicóticos y resguardo de la verdad histórica.')" 
+                            class="px-2 py-1 bg-[#240b45] border border-purple-600 text-cyan-400 hover:bg-purple-800 transition-colors">
+                        2
+                    </button>
+                    <button onclick="showSystemMsg('⚠️ ERROR DE CONEXIÓN ARCANA:\nLa Página 3 ha sido sellada por un conjuro de seguridad del Consejo de Magos.')" 
+                            class="px-2 py-1 bg-[#240b45] border border-purple-600 text-cyan-400 hover:bg-purple-800 transition-colors">
+                        3
+                    </button>
+                    <span class="text-gray-500 px-1">...</span>
+                    <button onclick="showSystemMsg('⚠️ ERROR DE SISTEMA:\nNo se pudieron cargar las siguientes páginas debido a una huelga imprevista en las granjas de servidores de Gnomos.')" 
+                            class="px-2 py-1 bg-[#240b45] border border-purple-600 text-cyan-400 hover:bg-purple-800 transition-colors">
+                        [Siguiente >]
+                    </button>
+                    <button onclick="showSystemMsg('⚠️ ERROR DE SISTEMA:\nAcceso denegado a las profundidades de la Red Arcana.')" 
+                            class="px-2 py-1 bg-[#240b45] border border-purple-600 text-cyan-400 hover:bg-purple-800 transition-colors">
+                        [Última >>]
+                    </button>
+                </div>
+                <p class="text-[9px] text-red-400 mt-2.5 blink-text">⚡ ALERTA: Conexión inestable por lluvia de meteoros. No intente forzar el paso a la página 2.</p>
+            </div>
+
+        </section>
+
+        <!-- COLUMNA DERECHA: PUBLICIDAD 1 (Monstruas BRUTALUV) y Libro de visitas (3 Columnas) -->
+        <aside class="lg:col-span-3 space-y-6">
+            
+            <!-- PUBLICIDAD 1: MONSTRUAS "BRUTALUV" (PERMANENTE EN COLUMNA + POP UP AL INICIO) -->
+            <section class="retro-window p-2 rainbow-glow">
+                <div class="bg-gradient-to-r from-pink-500 to-purple-600 p-1 text-[11px] font-bold text-center text-white font-mono flex justify-between items-center">
+                    <span>🔥 ¡ANUNCIO ESTRELLA! 🔥</span>
+                    <span class="blink-text text-yellow-300">¡NUEVO CD!</span>
+                </div>
+                <div class="bg-black p-3 rounded text-center text-xs font-mono relative overflow-hidden">
+                    <span class="text-pink-500 font-bold text-sm block tracking-widest animate-pulse">⚡ BRUTALUV ⚡</span>
+                    <span class="text-cyan-400 text-[10px] block font-bold mb-2">Grupo Idol de Chicas Monstruo</span>
+                    
+                    <!-- Simulación de portada del CD retro -->
+                    <div class="w-full aspect-square bg-gradient-to-tr from-pink-900 via-purple-950 to-blue-900 border-2 border-pink-500 rounded p-4 flex flex-col items-center justify-center my-3 relative">
+                        <div class="absolute -top-1 -left-1 bg-red-600 text-white text-[8px] px-1 py-0.5 rounded font-bold uppercase rotate-12">¡Hype!</div>
+                        <span class="text-3xl animate-bounce">🧟‍♀️🧛‍♀️🧌</span>
+                        <span class="text-white text-xs font-bold mt-2">💿 "GARRAS DE FRESA" 💿</span>
+                        <span class="text-[9px] text-gray-400 mt-1">Sencillo Debut: "Mordisco Fatal"</span>
+                    </div>
+
+                    <p class="text-gray-300 text-[11px] leading-tight mb-3">
+                        ¡El cuarteto infernal compuesto por una Súcubo, una Zombie, una Troll de las montañas y una Vampiresa lanza su álbum debut!
+                    </p>
+
+                    <button onclick="showSystemMsg('💿 ¡Escuchando el éxito \'Mordisco Fatal\' en calidad súper comprimida (96kbps)! \n🎧 Sonidos de distorsión monstruosa llenan tus oídos arcanos.')" 
+                            class="w-full retro-button py-2 text-xs text-white font-bold bg-pink-600 border-pink-300 hover:bg-pink-500">
+                        ⚡ ESCUCHAR ADELANTO MP3
+                    </button>
+                    <span class="text-[9px] text-gray-500 block mt-2">¡Consigue el póster autografiado en todas las tiendas de pócimas!</span>
+                </div>
+            </section>
+
+            <!-- APARTADO DE RED SOCIAL: INSTAGRIM (INSTAGRAM RETRO) -->
+            <section class="retro-window p-3 border-cyan-400 border-2">
+                <div class="retro-header-bar p-1 px-2 text-xs font-bold text-white flex justify-between items-center pixel-font">
+                    <span>📸 SÍGUENOS EN INSTAGRIM</span>
+                    <span class="text-yellow-300">@GrimorioDiario</span>
+                </div>
+                <div class="bg-black p-3 mt-2 rounded border border-cyan-900 text-center font-mono">
+                    <div class="flex justify-center mb-3">
+                        <!-- Logotipo retro de InstaGrim estilo Polaroid de los 2000s -->
+                        <svg class="w-12 h-12" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="4" y="4" width="40" height="40" rx="10" fill="url(#instaGradient)" stroke="#00ffcc" stroke-width="2"/>
+                            <rect x="8" y="8" width="32" height="12" fill="#2c114d" />
+                            <circle cx="24" cy="27" r="9" stroke="#00ffcc" stroke-width="3" fill="#150529"/>
+                            <circle cx="24" cy="27" r="4" fill="#ff00ff"/>
+                            <circle cx="35" cy="14" r="2.5" fill="#00ffff"/>
+                            <path d="M8 20H40" stroke="#ff00ff" stroke-width="2"/>
+                            <defs>
+                                <radialGradient id="instaGradient" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" transform="translate(12 12) rotate(45) scale(48)">
+                                    <stop offset="0%" stop-color="#ff00ff"/>
+                                    <stop offset="50%" stop-color="#8b5cf6"/>
+                                    <stop offset="100%" stop-color="#00ffcc"/>
+                                </radialGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                    <span class="text-xs text-yellow-300 font-bold block mb-1">🔮 ¡MÍRANOS EN EL ESPEJO DE INSTAGRIM!</span>
+                    <p class="text-[10px] text-gray-300 mb-3 leading-tight">
+                        Instantáneas diarias de avistamientos de ninfas, ranas de oro y los mejores memes del Inframundo.
+                    </p>
+                    <a href="https://www.instagram.com" target="_blank" 
+                       class="block w-full retro-button py-2 text-xs text-white font-bold bg-[#8b5cf6] hover:bg-[#7c3aed] text-center transition-all decoration-none">
+                        🌟 PORTAL A INSTAGRIM
+                    </a>
+                    <span class="text-[8px] text-gray-500 block mt-2">Compatible con Espejos de Obsidiana v4.2.</span>
+                </div>
+            </section>
+
+            <!-- HORÓSCOPO ARCANO -->
+            <section class="retro-window p-3">
+                <div class="retro-header-bar p-1 px-2 text-xs font-bold text-white pixel-font">
+                    <span>🔮 HORÓSCOPO DEL ORÁCULO DE SÍLICE</span>
+                </div>
+                <div class="bg-[#150529] p-3 text-xs font-mono space-y-2 border border-purple-900">
+                    <label class="block text-gray-300">Selecciona tu signo elemental:</label>
+                    <select id="horoscope-select" onchange="generateHoroscope()" class="w-full bg-[#3b0764] text-white border border-purple-500 p-1 rounded text-xs">
+                        <option value="gorgona">Gorgona (Nacidos bajo mirada fría)</option>
+                        <option value="fenix">Fénix (Renacidos crónicos)</option>
+                        <option value="kraken">Kraken (Hundidores de impuestos)</option>
+                        <option value="golem">Golem de Arcilla (Amantes de la tierra)</option>
+                        <option value="duende">Duende de la Inflación (Avaros)</option>
+                    </select>
+                    <div class="bg-black p-2 rounded text-cyan-400 min-h-[80px]" id="horoscope-text">
+                        Consultando constelaciones de silicio...
+                    </div>
+                </div>
+            </section>
+
+            <!-- LIBRO DE VISITAS / GUESTBOOK -->
+            <section class="retro-window p-3">
+                <div class="retro-header-bar p-1 px-2 text-xs font-bold text-white pixel-font mb-2">
+                    <span>📜 FIRMA MI LIBRO DE VISITAS</span>
+                </div>
+                <form id="guestbook-form" onsubmit="submitGuestbook(event)" class="space-y-2 text-xs font-mono">
+                    <input type="text" id="guest-name" required placeholder="Tu Clan/Nombre" 
+                           class="w-full bg-[#2c134d] text-white border border-purple-500 rounded p-1 text-xs">
+                    <textarea id="guest-msg" required placeholder="¡Hechizo de mensaje retro! 💫" rows="2"
+                              class="w-full bg-[#2c134d] text-white border border-purple-500 rounded p-1 text-xs"></textarea>
+                    <button type="submit" class="retro-button w-full py-1 text-white font-bold">🌟 ENVIAR FIRMA 🌟</button>
+                </form>
+                <div class="mt-3 space-y-2 max-h-40 overflow-y-auto" id="guestbook-list">
+                    <div class="bg-black p-2 rounded text-[10px] font-mono border border-purple-900">
+                        <span class="text-cyan-400">🧚‍♂️ Fairy_Luz69:</span>
+                        <p class="text-gray-400">"El diseño con estrellas mágicas de este blog me vuela la cabeza. ¡Aguante el año 412!"</p>
+                    </div>
+                </div>
+            </section>
+
+        </aside>
+
+    </main>
+
+    <!-- PUBLICIDAD 1 POP-UP SÚPER INVASIVO (BRUTALUV) -->
+    <div id="retro-popup" class="fixed bottom-4 right-4 max-w-sm w-full retro-window z-40 overflow-hidden hidden rainbow-glow">
+        <div class="retro-header-bar p-1 px-2 text-xs font-bold text-white flex justify-between items-center pixel-font">
+            <span class="blink-text text-yellow-300">🔥 ¡LANZAMIENTO EXCLUSIVO DE CD! 🔥</span>
+            <button onclick="closePopup()" class="bg-red-600 px-1.5 py-0.5 rounded text-[9px] hover:bg-red-500">X</button>
+        </div>
+        <div class="p-4 bg-gradient-to-r from-purple-950 to-pink-950 text-center font-mono text-xs">
+            <span class="text-[10px] text-pink-400 font-bold block mb-1">💿 ¡EL DISCO DEL MILENIO YA DISPONIBLE! 💿</span>
+            <p class="text-white text-sm font-bold my-1">💥 "GARRAS DE FRESA" por BRUTALUV 💥</p>
+            <p class="text-yellow-300 text-[10px] mt-1">"La banda que el Ministerio no quiere que escuches por su ruidosa libertad."</p>
+            <div class="flex justify-center gap-2 mt-3">
+                <button onclick="buyAlbum()" class="retro-button px-3 py-1 text-yellow-300 font-bold text-xs">¡COMPRAR MP3 (2 Monedas)!</button>
+                <button onclick="closePopup()" class="bg-gray-700 px-2 py-1 rounded text-white text-[10px]">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DETALLES DE NOTICIAS -->
+    <div id="article-modal" class="fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-50 hidden">
+        <div class="max-w-2xl w-full retro-window overflow-hidden">
+            <div class="retro-header-bar p-2 flex justify-between items-center">
+                <span class="pixel-font text-white" id="modal-title">Lector Arcano v1.02</span>
+                <button onclick="closeModal()" class="retro-button px-2 py-0.5 text-xs text-white">X</button>
+            </div>
+            <div class="p-6 bg-[#1f093d] font-mono text-sm space-y-4 text-gray-200">
+                <div id="modal-body" class="max-h-[60vh] overflow-y-auto pr-2">
+                    <!-- Contenido dinámico cargado por JS -->
+                </div>
+                <div class="flex justify-end pt-4 border-t border-purple-900">
+                    <button onclick="closeModal()" class="retro-button px-4 py-1 text-white font-bold">CERRAR PERGAMINO</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MENSAJE DE SISTEMA CUSTOM (No alert) -->
+    <div id="system-alert" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-w-sm w-full retro-window z-50 overflow-hidden hidden">
+        <div class="retro-header-bar p-1 px-2 text-xs font-bold text-white flex justify-between items-center pixel-font">
+            <span>🧙‍♂️ MENSAJE DEL CONSEJO MÁGICO</span>
+            <button onclick="closeSystemAlert()" class="bg-red-600 px-1 py-0.5 rounded text-[10px]">X</button>
+        </div>
+        <div class="p-4 bg-black text-center font-mono text-xs text-[#00ffcc] space-y-3">
+            <p id="system-alert-text">Cargando...</p>
+            <button onclick="closeSystemAlert()" class="retro-button px-4 py-1 text-white font-bold">ENTENDIDO</button>
+        </div>
+    </div>
+
+    <!-- PIE DE PÁGINA RETRO -->
+    <footer class="max-w-7xl mx-auto border-t-4 border-[#4a1d96] p-6 bg-[#150529] text-center font-mono text-xs text-gray-400 space-y-2 mt-8">
+        <div class="flex justify-center gap-4 text-lg">
+            <span>🔮</span><span>🐉</span><span>🧚‍♀️</span><span>🧌</span><span>🦄</span>
+        </div>
+        <p>© Todos los derechos y hechizos de copia reservados por el Gremio de Gnomos del Servidor, 2026.</p>
+        <p class="text-pink-400">Este sitio se ve mejor a una resolución de 800x600 px usando Netscape Navigator 4.0 o superior con amplificación de éter.</p>
+        <div class="inline-block bg-black px-3 py-1 rounded border border-purple-800">
+            <span>🛡️ Seguridad: Certificado contra maldiciones de tipo vudú.</span>
+        </div>
+    </footer>
+
+    <script>
+        // --- 1. CONFIGURACIÓN DE EFECTOS MÁGICOS (CHISPAS CURSOR) ---
+        const sparkleContainer = document.getElementById('sparkle-container');
+        document.addEventListener('mousemove', (e) => {
+            if (Math.random() > 0.15) return; // Limitar frecuencia de chispas
+            
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+            sparkle.style.left = `${e.clientX + window.scrollX}px`;
+            sparkle.style.top = `${e.clientY + window.scrollY}px`;
+            
+            const colors = ['#00ffcc', '#ff00ff', '#ffff00', '#00ffff', '#ff0099'];
+            sparkle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            sparkle.style.boxShadow = `0 0 8px ${sparkle.style.backgroundColor}`;
+            
+            sparkleContainer.appendChild(sparkle);
+            
+            setTimeout(() => {
+                sparkle.remove();
+            }, 800);
+        });
+
+        // --- 2. CONFIGURACIÓN DEL CLIMA Y CALENDARIO DE FANTASÍA ---
+        const fantasyDates = [
+            "Día del Sapo, Mes del Trueno Místico, Era del Fénix 412",
+            "Noche de Luna Llena Negra, Año de los Trasgos Rebeldes",
+            "Marea Alta del Pantano del Duende, Siglo de las Varitas de Pino",
+            "Solsticio del Trigo de Oro, Década de la Gran Plaga de Golems"
+        ];
+        document.getElementById('fantasy-date').innerText = fantasyDates[Math.floor(Math.random() * fantasyDates.length)];
+
+        // Contador de Visitas Simulado
+        let counter = 854219;
+        setInterval(() => {
+            counter += Math.floor(Math.random() * 3) + 1;
+            document.getElementById('visitor-counter').innerText = String(counter).padStart(8, '0');
+        }, 3000);
+
+        // --- 3. REPRODUCTOR WINMAGIC MP3 (Tone.js real synth) ---
+        let synth = null;
+        let seq = null;
+        let isPlaying = false;
+
+        function initSynth() {
+            if (synth) return;
+            synth = new Tone.Synth({
+                oscillator: { type: "square" },
+                envelope: { attack: 0.05, decay: 0.1, sustain: 0.3, release: 1 }
+            }).toDestination();
+        }
+
+        function playMusic(trackType) {
+            initSynth();
+            Tone.start();
+
+            if (isPlaying) {
+                stopMusic();
+            }
+
+            isPlaying = true;
+            document.getElementById('track-status').innerText = "Estado: Tocando";
+            document.getElementById('song-title').innerText = "🎵 Brutaluv - Garras de Fresa (8-Bit Remix) 🎵";
+
+            const notes = ["C4", "Eb4", "G4", "C5", "Ab4", "F4", "Ab4", "G4", "C4", "Eb4", "G4", "Bb4", "Ab4", "F4", "C5", "G4"];
+            let step = 0;
+
+            seq = Tone.Transport.scheduleRepeat((time) => {
+                const note = notes[step % notes.length];
+                synth.triggerAttackRelease(note, "16n", time);
+                
+                const bars = document.querySelectorAll('.eq-bar');
+                bars.forEach(bar => {
+                    bar.style.height = `${Math.floor(Math.random() * 90) + 10}%`;
+                });
+
+                step++;
+            }, "8n");
+
+            Tone.Transport.start();
+        }
+
+        function stopMusic() {
+            if (seq !== null) {
+                Tone.Transport.clear(seq);
+                seq = null;
+            }
+            Tone.Transport.stop();
+            isPlaying = false;
+            document.getElementById('track-status').innerText = "Estado: Detenido";
+            document.getElementById('song-title').innerText = "Música Pausada";
+            
+            const bars = document.querySelectorAll('.eq-bar');
+            bars.forEach(bar => bar.style.height = '10%');
+        }
+
+        // --- 4. ENCUESTA SENSACIONALISTA ---
+        function submitPoll(event) {
+            event.preventDefault();
+            document.getElementById('poll-form').classList.add('hidden');
+            document.getElementById('poll-results').classList.remove('hidden');
+            if (synth) {
+                synth.triggerAttackRelease("E5", "8n");
+            }
+        }
+
+        // --- 5. GENERADOR DE HORÓSCOPOS ---
+        const horoscopes = {
+            gorgona: "Hoy alguien intentará sostenerte la mirada y acabará muy rígido en una parada de escobas. Tu magnetismo es... petrificante.",
+            fenix: "Cuidado con los asadores hoy; podrías acabar cenizando tus mejores plumas antes del fin de semana.",
+            kraken: "Es un día excelente para cobrar peajes ilegales a barcos de duendes. Tus tentáculos brillarán bajo la luz de la luna llena.",
+            golem: "Sentirás pesadez en tus articulaciones de arcilla. Te recomendamos aplicar lodo templado e ignorar a los gnomos.",
+            duende: "La codicia te sonreirá. Un elfo despistado perderá plata y el código tributario dice que es legítimamente tuyo."
+        };
+
+        function generateHoroscope() {
+            const val = document.getElementById('horoscope-select').value;
+            document.getElementById('horoscope-text').innerText = horoscopes[val];
+        }
+        generateHoroscope();
+
+        // --- 6. LIBRO DE VISITAS INTERACTIVO ---
+        function submitGuestbook(event) {
+            event.preventDefault();
+            const name = document.getElementById('guest-name').value;
+            const msg = document.getElementById('guest-msg').value;
+
+            const container = document.getElementById('guestbook-list');
+            const newMsg = document.createElement('div');
+            newMsg.className = "bg-black p-2 rounded text-[10px] font-mono border border-pink-800 animate-pulse";
+            newMsg.innerHTML = `
+                <span class="text-pink-400">🧙‍♂️ ${name}:</span>
+                <p class="text-white">${msg}</p>
+            `;
+            container.insertBefore(newMsg, container.firstChild);
+
+            document.getElementById('guest-name').value = '';
+            document.getElementById('guest-msg').value = '';
+
+            if (synth) {
+                synth.triggerAttackRelease("G5", "16n");
+                setTimeout(() => synth.triggerAttackRelease("C6", "8n"), 100);
+            }
+            showSystemMsg(`✨ ¡Gracias ${name}! Tu firma rúnica ha sido grabada en el éter.`);
+        }
+
+        // --- 7. MODALES DE ARTÍCULOS ---
+        const articles = {
+            'missing-case': `
+                <h3 class="text-xl text-cyan-300 font-serif mb-2">👮 El Caso Cerrado por Decreto de la Ninfa Lysandra: ¿Desaparición o Conspiración?</h3>
+                <p class="text-xs text-gray-400">Publicado por Reportero_Duende_Agudo | Categoría: Crimen Arcana</p>
+                <div class="space-y-3 mt-4 text-xs leading-relaxed font-mono">
+                    <p>La guardia élfica ha sellado los accesos al Lago Cristalino bajo el absurdo argumento de "tareas de limpieza de algas de neón". Sin embargo, varios pescadores locales informan de extraños destellos fluorescentes saliendo del fondo marino por las noches.</p>
+                    <p class="bg-black p-2 rounded text-red-400">🚨 ARCHIVO DE COMENTARIOS CONSPIRANOICOS EN SÚPER DETALLE:</p>
+                    <div class="space-y-2">
+                        <div class="p-2 border-l-2 border-purple-500 bg-[#160a26]">
+                            <strong>🗣️ Gnomo_De_Sótano:</strong> "Ella sabía lo de los reactores nucleares de maná. El Ministerio utiliza a las ninfas como baterías biológicas para dar energía a sus oficinas centrales."
+                        </div>
+                        <div class="p-2 border-l-2 border-purple-500 bg-[#160a26]">
+                            <strong>🗣️ Troll_Escéptico:</strong> "No existen las ninfas del agua. Son autómatas mecánicos programados por los Golems para espiar nuestros movimientos fiscales. Investiguen quién financió su laguna."
+                        </div>
+                        <div class="p-2 border-l-2 border-purple-500 bg-[#160a26]">
+                            <strong>🗣️ Vampiro_Comercial:</strong> "La última vez que la vi, estaba leyendo la saga del cómic 'Crónicas del Fin'. Estaba a punto de exponer el pasado de este mundo. ¡Sigan el dinero de las imprentas!"
+                        </div>
+                    </div>
+                </div>
+            `,
+            'drendill-accident': `
+                <h3 class="text-xl text-yellow-300 font-serif mb-2">💥 ¡Explosión Pegajosa en la Mansión Drendill de Oro Falso!</h3>
+                <p class="text-xs text-gray-400">Publicado por Cronista_De_Gala_Espectral | Categoría: Social / Escándalos</p>
+                <div class="space-y-3 mt-4 text-xs leading-relaxed font-mono">
+                    <p>Lo que se planeaba como la velada más cara del milenio terminó en un desastre alquímico de proporciones húmedas. Un barril inestable de "Cerveza de Éter Estelar" explotó en la cocina de los hermanos Barnaby y Barnaco Drendill, liberando una marea verde de baba espumosa.</p>
+                    <p>Los 150 distinguidos invitados (entre ellos duquesas banshee y archimagos) terminaron flotando en burbujas mágicas de jabón místico, riéndose de forma descontrolada mientras la espuma les brotaba de las orejas. Se sospecha sabotaje gremial contra los duendes del oro.</p>
+                </div>
+            `,
+            'comic-theory': `
+                <h3 class="text-xl text-cyan-400 font-serif mb-2">📖 La saga de cómics prohibidos: "La Paradoja de la Carne Pensante"</h3>
+                <p class="text-xs text-gray-400">Hilo iniciado por Garlok_El_Desvelado_99 | Foro: Freeware</p>
+                <div class="space-y-3 mt-4 text-xs leading-relaxed font-mono">
+                    <p>¡Hola a todos! Sé que muchos me tildan de demente por autopublicar esto, pero no puedo seguir callado. Mi serie de cómics expone que la Gran Guerra del Éter nunca ocurrió como dice el Archidruida Aurelius.</p>
+                    <p>Los Golems no son de barro local, ¡son extraterrestres de silicio puro! En el tomo 2, dibujo mapas históricos del satélite de cobre que demuestran que las minas de oro del Sur no son depósitos naturales, ¡sino antiguos vertederos de combustible espacial alienígena!</p>
+                    <p class="text-yellow-400">⚠️ ¡Descarga antes de que el Ministerio de Educación me baje el post y me queme el disco rígido!</p>
+                </div>
+            `,
+            'human-theory': `
+                <h3 class="text-xl text-red-500 font-serif mb-2">💀 Leyendas Urbanas: La "Carne Pensante" y su Magia Negra</h3>
+                <p class="text-xs text-gray-400">Hilo iniciado por Mago_Oscuro_Sin_Filtro | Foro: Ocultismo</p>
+                <div class="space-y-3 mt-4 text-xs leading-relaxed font-mono">
+                    <p>¿Qué pasaría si la magia no fuera la única fuerza rectora del universo? En círculos profundos del bajo mundo se rumorea la existencia de una especie prehistórica: "Los Humanos". Criaturas frágiles de carne sin escamas, garras, ni cuernos.</p>
+                    <p>La teoría dice que inventaron un tipo de alquimia destructiva llamada "Tecnología de Fisión", la cual es considerada la más letal rama de la Magia Negra Inversa. Eran capaces de encender fuego sin conjuros de chispas. ¿La prueba? Los miles de cráneos redondos y sin cuernos apilados bajo los sótanos prohibidos del Ministerio.</p>
+                </div>
+            `
+        };
+
+        function openArticle(key) {
+            const article = articles[key];
+            if (article) {
+                document.getElementById('modal-body').innerHTML = article;
+                document.getElementById('article-modal').classList.remove('hidden');
+                if (synth) {
+                    synth.triggerAttackRelease("A4", "8n");
+                }
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('article-modal').classList.add('hidden');
+        }
+
+        function openComments(key) {
+            openArticle(key);
+        }
+
+        // --- 8. ANUNCIOS POP-UP SATÍRICOS (BRUTALUV POP UP) ---
+        setTimeout(() => {
+            document.getElementById('retro-popup').classList.remove('hidden');
+        }, 3000);
+
+        function closePopup() {
+            document.getElementById('retro-popup').classList.add('hidden');
+            // Reabrir en un intervalo (molesto y retro de los 2000s)
+            setTimeout(() => {
+                document.getElementById('retro-popup').classList.remove('hidden');
+            }, 35000);
+        }
+
+        function buyAlbum() {
+            showSystemMsg("💰 ¡Éxito de transacción! Tu monedero rúnico ha sido debitado con 2 Monedas de Plata. Disfruta de 'Garras de Fresa' de BRUTALUV en formato MP3 súper comprimido.");
+            closePopup();
+        }
+
+        // --- 9. MENSAJE DE SISTEMA CUSTOM ---
+        function showSystemMsg(text) {
+            document.getElementById('system-alert-text').innerText = text;
+            document.getElementById('system-alert').classList.remove('hidden');
+        }
+
+        function closeSystemAlert() {
+            document.getElementById('system-alert').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
